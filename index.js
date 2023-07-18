@@ -11,56 +11,61 @@ let rs = require("readline-sync");
 let optionSelection = "";
 let number = /^\d+$/;
 let storedNumbers = [];
+let num1 = 0;
+let num2 = 0;
 
 function chooseOperator() {
-  optionSelection = rs.question(
-    `What operation would you like to perform? Please choose between "/" "*" "-" and "+". `
-  );
+  optionSelection = rs.question("What operation would you like to perform? ", {
+    limit: /^[*/+\-]$/,
+    limitMessage: `That is not a valid operation. Please choose between "/", "*", "-", and "+".`,
+  });
 }
 
-// Asks what operation I would like to perform
+function askNum1() {
+  num1 = rs.question("Please enter the first number ", {
+    limit: number,
+    limitMessage: "This is not a number",
+  });
+}
 
-// checks if the operation is the correct one
+function askNum2() {
+  num2 = rs.question("Please enter the second number ", {
+    limit: number,
+    limitMessage: "This is not a number",
+  });
+}
 
-// If not correct, asks again what operation I want to perform
-
-// Ask for the first number
-
-// If the first number is not correct, tells about it and asks for the first number
-
-// Saves the first number
-
-// Asks for the second number
-
-// If the second number is not correct, tells about it and asks for the second number
-
-// Saves the second number
-
-// Does the calculation in a function
-
-// Asking for first number
-
-// this function should operate by itself, meaning no if statement. The if statement should be outside of the function
-function calculus() {
-  //rework the variable and see if you can put num1 at the top as an independant variable which will be later used for function calculator(num1, num2)
-  let num1 = rs.question("Please enter the first number ");
-  if (number.test(num1)) {
-    storedNumbers.push(num1);
-  } else {
-    console.log("This is not a number ");
+function calculus(num1, num2) {
+  switch (optionSelection) {
+    case "/":
+      return num1 / num2;
+      break;
+    case "*":
+      return num1 * num2;
+      break;
+    case "-":
+      return num1 - num2;
+      break;
+    case "+":
+      return num1 + num2;
+      break;
+    default:
+      return console.log("try again");
   }
 }
 
 chooseOperator();
-calculus();
+askNum1();
+askNum2();
 
-// checking if the right selector has been selected
+// check if the right selector has been selected
 if (/^[*/\-\+]$/.test(optionSelection)) {
-  // optionSelection matches the regex
-  console.log("Good choice");
-  calculus();
-} else {
-  // optionSelection does not match the regex
-  console.log("That is not a valid operation");
-  chooseOperator();
+  // check if num1 and num2 are digits
+  if (number.test(num1) && number.test(num2)) {
+    // save num1 and num2
+    storedNumbers.push(num1, num2);
+  }
+  //calculate the result
+  let result = calculus(Number(num1), Number(num2));
+  console.log(`The result is: ${result}`);
 }
