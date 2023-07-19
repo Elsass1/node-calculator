@@ -8,10 +8,8 @@ let rs = require("readline-sync");
 // After a valid number is entered, ask the user, "Please enter the second number". Perform the same error handling as before
 // Then create a function to perform the proper math operation and print the result as: "The result is: X" where "X" is the actual result
 
-// NEED TO WORK WHEN NUM / 0
-
 let optionSelection = "";
-let number = /^\d+$/;
+let number = /^-?\d+(\.\d+)?$/;
 let storedNumbers = [];
 let num1 = 0;
 let num2 = 0;
@@ -35,6 +33,11 @@ function askNum2() {
     limit: number,
     limitMessage: "This is not a number",
   });
+
+  if (num2 === "0") {
+    console.log("Error. Please choose a number higher than 0.");
+    askNum2();
+  }
 }
 
 function calculus(num1, num2) {
@@ -42,24 +45,21 @@ function calculus(num1, num2) {
     case "/":
       if (num2 === 0) {
         console.log("Error. Please choose a number higher than 0.");
+        askNum2();
         return;
-        // CORRECT THIS
       }
       return num1 / num2;
-      break;
     case "*":
       return num1 * num2;
-      break;
     case "-":
       return num1 - num2;
-      break;
     case "+":
       return num1 + num2;
-      break;
     default:
-      return console.log(
+      console.log(
         `That is not a valid operation. Please choose between "/", "*", "-", and "+".`
       );
+      return;
   }
 }
 
@@ -74,7 +74,7 @@ if (/^[*/\-\+]$/.test(optionSelection)) {
     // save num1 and num2
     storedNumbers.push(num1, num2);
   }
-  //calculate the result
+  // calculate the result
   let result = calculus(Number(num1), Number(num2));
   console.log(`The result is: ${result}`);
 }
